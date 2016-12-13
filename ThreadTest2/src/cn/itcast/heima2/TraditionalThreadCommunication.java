@@ -20,60 +20,62 @@ public class TraditionalThreadCommunication {
 
 	/**
 	 * @param args
-	 */ 
+	 */
 	public static void main(String[] args) {
-		
+
 		final Business business = new Business();
-		new Thread(
-				new Runnable() {
-					
-					@Override
-					public void run() {
-					
-						for(int i=1;i<=50;i++){
-							business.sub(i);
-						}
-						
-					}
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+
+				for (int i = 1; i <= 50; i++) {
+					business.sub(i);
 				}
-		).start();
-		
-		for(int i=1;i<=50;i++){
+
+			}
+		}).start();
+
+		for (int i = 1; i <= 50; i++) {
 			business.main(i);
 		}
-		
+
 	}
 
 }
-  class Business {
-	  private boolean bShouldSub = true;
-	  public synchronized void sub(int i){
-		  while(!bShouldSub){
-			  try {
+
+class Business {
+	private boolean bShouldSub = true;
+
+	public synchronized void sub(int i) {
+		// 这样的一个while循环叫做自旋锁（校注：这种做法要慎重，目前的JVM实现自旋会消耗CPU，如果长时间不调用doNotify方法，
+		// doWait方法会一直自旋，CPU会消耗太大）。被唤醒的线程会自旋直到自旋锁(while循环)里的条件变为false。
+		while (!bShouldSub) {
+			try {
 				this.wait();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-		  }
-			for(int j=1;j<=10;j++){
-				System.out.println("sub thread sequence of " + j + ",loop of " + i);
+		}
+		for (int j = 1; j <= 10; j++) {
+			System.out.println("sub thread sequence of " + j + ",loop of " + i);
+		}
+		bShouldSub = false;
+		this.notify();
+	}
+
+	public synchronized void main(int i) {
+		while (bShouldSub) {
+			try {
+				this.wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
-		  bShouldSub = false;
-		  this.notify();
-	  }
-	  
-	  public synchronized void main(int i){
-		  	while(bShouldSub){
-		  		try {
-					this.wait();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-		  	}
-			for(int j=1;j<=100;j++){
-				System.out.println("main thread sequence of " + j + ",loop of " + i);
-			}
-			bShouldSub = true;
-			this.notify();
-	  }
-  }
+		}
+		for (int j = 1; j <= 100; j++) {
+			System.out.println("main thread sequence of " + j + ",loop of " + i);
+		}
+		bShouldSub = true;
+		this.notify();
+	}
+}

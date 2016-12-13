@@ -1,9 +1,7 @@
 package cn.itcast.heima2;
 
-import java.util.Collections;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class BlockingQueueCommunication {
 
@@ -38,9 +36,8 @@ public class BlockingQueueCommunication {
 		 
 		  BlockingQueue<Integer> queue1 = new ArrayBlockingQueue<Integer>(1);
 		  BlockingQueue<Integer> queue2 = new ArrayBlockingQueue<Integer>(1);
-		  
+		  //匿名构造方法先与任何类的构造方法执行
 		  {
-			  Collections.synchronizedMap(null);
 			  try {
 				  System.out.println("xxxxxdfsdsafdsa");
 				queue2.put(1);

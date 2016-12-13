@@ -5,11 +5,11 @@ public class MultiThreadShareData {
 	private static ShareData1 data1 = new ShareData1();
 	
 	public static void main(String[] args) {
-		ShareData1 data2 = new ShareData1();
+		final ShareData1 data2 = new ShareData1();
 		new Thread(new MyRunnable1(data2)).start();
 		new Thread(new MyRunnable2(data2)).start();
 		
-		final ShareData1 data1 = new ShareData1();
+		/*final ShareData1 data1 = new ShareData1();
 		new Thread(new Runnable(){
 			@Override
 			public void run() {
@@ -23,7 +23,7 @@ public class MultiThreadShareData {
 				data1.increment();
 				
 			}
-		}).start();
+		}).start();*/
 
 	}
 
@@ -64,9 +64,11 @@ public class MultiThreadShareData {
 		private int j = 0;
 		public synchronized void increment(){
 			j++;
+			System.out.println("increment>>>"+j);
 		}
 		
 		public synchronized void decrement(){
 			j--;
+			System.out.println("decrement>>>"+j);
 		}
 	}

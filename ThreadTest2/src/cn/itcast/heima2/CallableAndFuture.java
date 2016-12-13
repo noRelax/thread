@@ -10,7 +10,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 
-
+//收麦子事例：种菜游戏
 public class CallableAndFuture {
 
 	/**
