@@ -21,58 +21,58 @@ package queue;
 
 import java.util.concurrent.ArrayBlockingQueue;
 
-/** 
-* @ClassName: Producer 
-* @Description: TODO(生产者) 
-* @author no_relax 
-* @date 2016年7月13日 下午5:15:39 
-*  
-*/
-public class Producer implements Runnable{
-	//声明一个阻塞队列
+/**
+ * @ClassName: Producer
+ * @Description: TODO(生产者)
+ * @author no_relax
+ * @date 2016年7月13日 下午5:15:39
+ * 
+ */
+public class Producer implements Runnable {
+	// 声明一个阻塞队列
 	private ArrayBlockingQueue<? super Number> queue;
-	//构造函数初始化时，传入这个队列
+
+	// 构造函数初始化时，传入这个队列
 	public Producer(ArrayBlockingQueue<? super Number> queue) {
-		this.queue=queue;
+		this.queue = queue;
 	}
 
 	@Override
 	public void run() {
 		while (true) {
 			try {
-				producer();                 
+				producer();
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
-				
+
 			}
 		}
-		
+
 	}
-	
-	void producer(){
-		/** 
-         * put()方法是如果容器满了的话就会把当前线程挂起 
-         * offer()方法是容器如果满的话就会返回false，也正是我在前一篇中实现的那种策略。 
-         */ 
+
+	void producer() {
+		/**
+		 * put()方法是如果容器满了的话就会把当前线程挂起
+		 * offer()方法是容器如果满的话就会返回false，也正是我在前一篇中实现的那种策略。
+		 */
 		try {
-//			queue.put(123);
+			// queue.put(123);
 			boolean offer = queue.offer(123);
-			System.out.println("producer:"+123+">>>>and return:"+offer);
+			System.out.println("producer:" + 123 + ">>>>and return:" + offer);
 		} catch (Exception e) {
 			e.printStackTrace();
-			
+
 		}
 	}
-	
+
 	public static void main(String[] args) {
-		int capacity = 10;  
-        ArrayBlockingQueue queue = new ArrayBlockingQueue<>(1);
-        new Thread(new Producer(queue)).start();
-        new Thread(new Producer(queue)).start();
-        new Thread(new Consumer(queue)).start();
-//        new Thread(new Consumer(queue)).start();
+		int capacity = 10;
+		ArrayBlockingQueue queue = new ArrayBlockingQueue<>(1);
+		new Thread(new Producer(queue)).start();
+		new Thread(new Producer(queue)).start();
+		new Thread(new Consumer(queue)).start();
+		// new Thread(new Consumer(queue)).start();
 	}
 
 }
-
