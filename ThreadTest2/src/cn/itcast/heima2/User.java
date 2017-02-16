@@ -3,6 +3,26 @@ package cn.itcast.heima2;
 public class User implements Cloneable {
 	private String name;
 	private int age;
+	{
+		System.out.println("no params constuctor!");
+	}
+
+	private User() {
+	};
+
+	private static User user = null;
+
+	public static User getInstance() {
+
+		if (user == null) {
+			synchronized (User.class) {
+				if (user == null) {
+					user = new User();
+				}
+			}
+		}
+		return user;
+	}
 
 	public User(String name, int age) {
 		this.name = name;
@@ -49,4 +69,9 @@ public class User implements Cloneable {
 	public String getName() {
 		return name;
 	}
+
+	public static void main(String[] args) {
+		User user = User.getInstance();
+	}
+
 }
